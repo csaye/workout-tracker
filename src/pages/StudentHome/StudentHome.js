@@ -7,7 +7,7 @@ import firebase from 'firebase/app';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 function StudentHome() {
-  const [group, setGroup] = useState('');
+  const [groupId, setGroupId] = useState('');
 
   function formatDate(d) {
     let year = d.getFullYear().toString();
@@ -28,7 +28,7 @@ function StudentHome() {
   const [groups] = useCollectionData(groupsQuery);
 
   const workoutsQuery = firebase.firestore().collection('workouts')
-  .where('group', '==', group ? group : 'null')
+  .where('groupId', '==', groupId ? groupId : 'null')
   .where('date', '==', currentDate ? currentDate : 'null');
   const [workouts] = useCollectionData(workoutsQuery, {idField: 'id'});
 
@@ -44,7 +44,7 @@ function StudentHome() {
     <div className="StudentHome center-box">
       <IonItem>
         <IonLabel>Select Group</IonLabel>
-        <IonSelect value={group} onIonChange={e => setGroup(e.target.value)}>
+        <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)}>
         {
           groups.map(g =>
             <IonSelectOption key={g.id} value={g.id}>{g.name}</IonSelectOption>
@@ -53,7 +53,7 @@ function StudentHome() {
         </IonSelect>
       </IonItem>
       {
-        group &&
+        groupId &&
         <div className="workouts-list">
         {
           workouts ?

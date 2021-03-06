@@ -1,5 +1,7 @@
 import './Workout.css';
 
+import Exercise from '../Exercise/Exercise';
+
 import firebase from 'firebase/app';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
@@ -8,8 +10,8 @@ function Workout(props) {
 
   // get exercises from firebase
   const exercisesQuery = firebase.firestore().collection('exercises')
-  .where('workoutId', '==', id);
-  // .orderBy('createdAt');
+  .where('workoutId', '==', id)
+  .orderBy('createdAt');
   const [exercises] = useCollectionData(exercisesQuery, {idField: 'id'});
 
   if (!exercises) {
@@ -22,16 +24,9 @@ function Workout(props) {
 
   return (
     <div className="Workout">
-      <p>{title}</p>
+      <h1>{title}</h1>
       {
-        exercises.map(e =>
-          <div key={e.id}>
-            <p>{e.name}</p>
-            <p>{e.sets}</p>
-            <p>{e.reps}</p>
-            <p>{e.comments}</p>
-          </div>
-        )
+        exercises.map(e => <Exercise key={e.id} data={e} />)
       }
     </div>
   );

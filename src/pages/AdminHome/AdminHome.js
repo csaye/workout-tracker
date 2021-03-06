@@ -9,7 +9,7 @@ import firebase from 'firebase/app';
 function AdminHome() {
   const [title, setTitle] = useState('');
   const [lastTitle, setLastTitle] = useState('');
-  const [group, setGroup] = useState('');
+  const [groupId, setGroupId] = useState('');
   const [date, setDate] = useState('');
 
   const [workoutRef, setWorkoutRef] = useState('');
@@ -28,14 +28,14 @@ function AdminHome() {
     setLastTitle(title);
     await firebase.firestore().collection('workouts').add({
       title,
-      group,
+      groupId,
       date,
       dateCreated: new Date()
     }).then(docRef => {
       setWorkoutRef(docRef);
     });
     setTitle('');
-    setGroup('');
+    setGroupId('');
     setDate('');
   }
 
@@ -47,7 +47,7 @@ function AdminHome() {
       reps,
       comments,
       workoutId: workoutRef.id,
-      dateCreated: new Date()
+      createdAt: new Date()
     });
     setName('');
     setSets(0);
@@ -104,7 +104,6 @@ function AdminHome() {
             onIonChange={e => setComments(e.target.value)}
             className="input-item"
             placeholder="comments"
-            required
             />
             <IonButton type="submit">Create Exercise</IonButton>
           </form>
@@ -123,7 +122,7 @@ function AdminHome() {
           </div>
           <IonItem className="group-select">
             <IonLabel>Select Group</IonLabel>
-            <IonSelect value={group} onIonChange={e => setGroup(e.target.value)} required>
+            <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)} required>
             {
               groups.map(g =>
                 <IonSelectOption key={g.id} value={g.id}>{g.name}</IonSelectOption>
