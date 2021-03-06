@@ -1,0 +1,15 @@
+.Exercise {
+  background: #efefef;
+  border-radius: 10px;
+  width: 80%;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+.Exercise p, .Exercise h2 {
+  margin: 0;
+}
+
+.Exercise .workout-info {
+  margin: 10px 0;
+}
