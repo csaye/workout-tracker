@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonSelect, IonSelectOption, IonItem, IonLabel } from '@ionic/react';
 
 import Workout from '../../components/Workout/Workout';
@@ -9,12 +9,27 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 function StudentHome() {
   const [group, setGroup] = useState('');
 
+  function formatDate(d) {
+    let year = d.getFullYear().toString();
+    let month = (d.getMonth() + 1).toString();
+    let day = d.getDate().toString();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  // get current date
+  const currentDate = formatDate(new Date());
+
   // get groups from firebase
   const groupsQuery = firebase.firestore().collection('groups').orderBy('name');
   const [groups] = useCollectionData(groupsQuery);
 
   const workoutsQuery = firebase.firestore().collection('workouts')
-  .where('group', '==', group ? group : 'null');
+  .where('group', '==', group ? group : 'null')
+  .where('date', '==', currentDate ? currentDate : 'null');
   const [workouts] = useCollectionData(workoutsQuery, {idField: 'id'});
 
   if (!groups) {
@@ -50,7 +65,7 @@ function StudentHome() {
                   workouts.map(w => <Workout key={w.id} data={w} />)
                 }
               </> :
-              <p>No workouts yet</p>
+              <p>No workouts for today</p>
             }
           </> :
           <p className="margin-sm">Loading workouts...</p>
