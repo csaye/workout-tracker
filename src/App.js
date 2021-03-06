@@ -1,11 +1,13 @@
+import React, { useState, useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import { IonApp, IonRouterOutlet, IonContent, IonPage, IonSpinner } from '@ionic/react';
+// import { IonReactRouter } from '@ionic/react-router';
 
 import SignIn from './pages/SignIn/SignIn';
 import StudentHome from './pages/StudentHome/StudentHome';
 import AdminHome from './pages/AdminHome/AdminHome';
+
+import Header from './components/Header/Header';
 
 import './App.css';
 
@@ -46,42 +48,80 @@ function App() {
     <IonApp>
       <IonPage>
         <Header />
-        <IonContent fullscreen>
+        <IonContent fullscreen className="ion-content">
           {/*<IonHeader collapse="condense">
             <IonToolbar>
               <IonTitle size="large">Workout Tracker</IonTitle>
             </IonToolbar>
           </IonHeader>*/}
-          <Router />
+          {/*<Router />*/}
+          <Page />
         </IonContent>
       </IonPage>
     </IonApp>
   );
 }
 
-function Header() {
+function Page() {
+  const [status, setStatus] = useState('');
+
+  async function getStatus() {
+    if (!firebase.auth().currentUser) {
+      setStatus('');
+      return;
+    }
+    // get user status
+    const uid = firebase.auth().currentUser.uid;
+    const userData = await firebase.firestore().collection('users').doc(uid).get();
+    setStatus(userData.data()?.isAdmin ? 'admin' : 'student');
+  }
+
+  // get status when auth state changed
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(() => {
+      getStatus();
+    });
+  });
+
+  // return if loading user status
+  if (firebase.auth().currentUser && !status) {
+    return (
+      <div className="Page">
+        <IonSpinner className="spinner" />
+      </div>
+    );
+  }
+
   return (
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>Workout Tracker</IonTitle>
-      </IonToolbar>
-    </IonHeader>
+    <div className="Page">
+      {
+        firebase.auth().currentUser ?
+        <>
+          {
+            status === 'admin' ?
+            <AdminHome /> :
+            <StudentHome />
+          }
+        </> :
+        <SignIn />
+      }
+    </div>
   );
 }
 
-function Router() {
-  return (
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/signin">
-          { firebase.auth().currentUser ? <SignIn /> : <Redirect to="/" /> }
-        </Route>
-        <Route exact path="/">
-          { firebase.auth().currentUser ? <StudentHome /> : <Redirect to="/signin" /> }
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  );
-}
+// function Router() {
+//   return (
+//     <IonReactRouter>
+//       <IonRouterOutlet>
+//         <Route exact path="/signin">
+//           <SignIn />
+//         </Route>
+//         <Route exact path="/">
+//           <StudentHome />
+//         </Route>
+//       </IonRouterOutlet>
+//     </IonReactRouter>
+//   );
+// }
 
 export default App;
