@@ -8,7 +8,7 @@
   border-radius: 10px;
   width: 50%;
   min-width: 150px;
-  margin: 0 auto;
+  margin: 5px auto;
 }
 
 .AdminHome .input-section {
@@ -23,4 +23,8 @@
 
 .AdminHome .submit-button {
   margin-top: 10px;
+}
+
+.AdminHome .group-select {
+  margin: 20px 0;
 }
