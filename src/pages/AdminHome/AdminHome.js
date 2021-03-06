@@ -68,7 +68,7 @@ function AdminHome() {
       {
         workoutRef ?
         <>
-          <p>Editing "{lastTitle}"</p>
+          <h1>Editing "{lastTitle}"</h1>
           <form onSubmit={createExercise} className="input-section">
             <h4 className="input-title">Exercise Name</h4>
             <IonInput
