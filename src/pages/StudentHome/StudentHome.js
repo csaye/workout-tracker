@@ -12,7 +12,7 @@ function StudentHome() {
   const [groups] = useCollectionData(groupsQuery);
 
   const workoutsQuery = firebase.firestore().collection('workouts')
-  .where('groupId', '==', group ? group : 'null');
+  .where('group', '==', group ? group : 'null');
   const [workouts] = useCollectionData(workoutsQuery, {idField: 'id'});
 
   if (!groups) {
