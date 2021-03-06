@@ -1,7 +1,8 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import SignIn from './pages/SignIn/SignIn';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -22,19 +23,39 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const App: React.FC = () => (
+function App() {
   <IonApp>
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Workout Tracker</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Workout Tracker</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <Router />
+      </IonContent>
+    </IonPage>
+  </IonApp>
+);
+
+function Router() {
+  return (
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
+        <Route exact path="/signin">
+          <SignIn />
         </Route>
         <Route exact path="/">
-          <Redirect to="/home" />
+          <Redirect to="/signin" />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
-  </IonApp>
-);
+  );
+}
 
 export default App;
