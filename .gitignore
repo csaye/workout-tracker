@@ -20,9 +20,11 @@
 .vscode
 .idea
 
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Optional eslint cache
 .eslintcache
+
+# config
+/src/util/firebaseConfig.js

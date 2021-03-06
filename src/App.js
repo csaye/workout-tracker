@@ -2,7 +2,12 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+
 import SignIn from './pages/SignIn/SignIn';
+import StudentHome from './pages/StudentHome/StudentHome';
+import AdminHome from './pages/AdminHome/AdminHome';
+
+import './App.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -23,35 +28,56 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+// firebase
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+import { firebaseConfig } from './util/firebaseConfig.js';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+// initialize firebase
+firebase.initializeApp(firebaseConfig);
+
 function App() {
-  <IonApp>
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Workout Tracker</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Workout Tracker</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <Router />
-      </IonContent>
-    </IonPage>
-  </IonApp>
-);
+  // use firebase auth
+  useAuthState(firebase.auth());
+
+  return (
+    <IonApp>
+      <IonPage>
+        <Header />
+        <IonContent fullscreen>
+          {/*<IonHeader collapse="condense">
+            <IonToolbar>
+              <IonTitle size="large">Workout Tracker</IonTitle>
+            </IonToolbar>
+          </IonHeader>*/}
+          <Router />
+        </IonContent>
+      </IonPage>
+    </IonApp>
+  );
+}
+
+function Header() {
+  return (
+    <IonHeader>
+      <IonToolbar>
+        <IonTitle>Workout Tracker</IonTitle>
+      </IonToolbar>
+    </IonHeader>
+  );
+}
 
 function Router() {
   return (
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/signin">
-          <SignIn />
+          { firebase.auth().currentUser ? <SignIn /> : <Redirect to="/" /> }
         </Route>
         <Route exact path="/">
-          <Redirect to="/signin" />
+          { firebase.auth().currentUser ? <StudentHome /> : <Redirect to="/signin" /> }
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
