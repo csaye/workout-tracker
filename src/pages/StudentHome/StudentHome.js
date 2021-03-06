@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { IonSelect, IonSelectOption, IonItem, IonLabel } from '@ionic/react';
 
+import Workout from '../../components/Workout/Workout';
+
 import firebase from 'firebase/app';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
@@ -45,11 +47,7 @@ function StudentHome() {
               workouts.length > 0 ?
               <>
                 {
-                  workouts.map(w =>
-                    <div>
-                      {w.title}
-                    </div>
-                  )
+                  workouts.map(w => <Workout key={w.id} data={w} />)
                 }
               </> :
               <p>No workouts yet</p>
