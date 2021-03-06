@@ -87,7 +87,7 @@ function Page() {
   if (firebase.auth().currentUser && !status) {
     return (
       <div className="Page">
-        <IonSpinner className="spinner" />
+        <p className="margin-sm">Loading...</p>
       </div>
     );
   }

@@ -13,12 +13,12 @@ function Header() {
   return (
     <IonHeader className="Header">
       <IonToolbar>
-        <div className="toolbar-items">
+        <div className="flex-row">
           <IonTitle>Workout Tracker</IonTitle>
           {
             firebase.auth().currentUser &&
-            <div className="auth-items">
-              <p>Signed in as {firebase.auth().currentUser.displayName}</p>
+            <div className="flex-row">
+              <p className="signed-in-as">Signed in as {firebase.auth().currentUser.displayName}</p>
               <img src={firebase.auth().currentUser.photoURL} />
               <IonButton className="ion-button" onClick={signOut}>Sign Out</IonButton>
             </div>

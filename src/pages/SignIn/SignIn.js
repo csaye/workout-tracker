@@ -12,7 +12,7 @@ function SignIn() {
   }
 
   return (
-    <div className="SignIn">
+    <div className="SignIn center-box">
       <IonButton onClick={signInWithGoogle}>Sign in with Google</IonButton>
     </div>
   )
