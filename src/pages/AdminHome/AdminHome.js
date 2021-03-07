@@ -6,13 +6,15 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import firebase from 'firebase/app';
 
+import { currentDate } from '../../util/currentDate';
+
 function AdminHome() {
   const [title, setTitle] = useState('');
   const [lastTitle, setLastTitle] = useState('');
   const [groupId, setGroupId] = useState('');
   const [date, setDate] = useState('');
 
-  const [workoutRef, setWorkoutRef] = useState('');
+  const [workoutId, setWorkoutId] = useState('');
 
   const [name, setName] = useState('');
   const [sets, setSets] = useState(0);
@@ -23,6 +25,11 @@ function AdminHome() {
   const groupsQuery = firebase.firestore().collection('groups').orderBy('name');
   const [groups] = useCollectionData(groupsQuery);
 
+  // get workouts from firebase
+  const workoutsQuery = firebase.firestore().collection('workouts')
+  .where('date', '==', currentDate ? currentDate : 'null');
+  const [workouts] = useCollectionData(workoutsQuery, {idField: 'id'});
+
   async function createWorkout(e) {
     e.preventDefault();
     setLastTitle(title);
@@ -32,7 +39,7 @@ function AdminHome() {
       date,
       dateCreated: new Date()
     }).then(docRef => {
-      setWorkoutRef(docRef);
+      setWorkoutId(docRef.id);
     });
     setTitle('');
     setGroupId('');
@@ -46,7 +53,7 @@ function AdminHome() {
       sets,
       reps,
       comments,
-      workoutId: workoutRef.id,
+      workoutId,
       createdAt: new Date()
     });
     setName('');
@@ -66,7 +73,7 @@ function AdminHome() {
   return (
     <div className="AdminHome center-box">
       {
-        workoutRef ?
+        workoutId ?
         <>
           <h1>Editing "{lastTitle}"</h1>
           <form onSubmit={createExercise} className="input-section">
@@ -107,41 +114,56 @@ function AdminHome() {
             />
             <IonButton type="submit">Create Exercise</IonButton>
           </form>
-          <IonButton className="submit-button" onClick={() => setWorkoutRef('')}>Finish</IonButton>
+          <IonButton className="submit-button" onClick={() => setWorkoutId('')}>Finish</IonButton>
         </> :
-        <form onSubmit={createWorkout}>
-          <div className="input-section">
-            <h1 className="input-title">Workout Title</h1>
-            <IonInput
-            value={title}
-            onIonChange={e => setTitle(e.target.value)}
-            placeholder="title"
-            className="input-item"
-            required
-            />
-          </div>
-          <IonItem className="group-select">
-            <IonLabel>Select Group</IonLabel>
-            <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)} required>
-            {
-              groups.map(g =>
-                <IonSelectOption key={g.id} value={g.id}>{g.name}</IonSelectOption>
-              )
-            }
-            </IonSelect>
-          </IonItem>
-          <div className="input-section">
-            <h1 className="input-title">Workout Date</h1>
-            <IonInput
-            value={date}
-            onIonChange={e => setDate(e.target.value)}
-            type="date"
-            className="input-item"
-            required
-            />
-          </div>
-          <IonButton type="submit" className="submit-button">Create Workout</IonButton>
-        </form>
+        <>
+          <form onSubmit={createWorkout}>
+            <div className="input-section">
+              <h1 className="input-title">Workout Title</h1>
+              <IonInput
+              value={title}
+              onIonChange={e => setTitle(e.target.value)}
+              placeholder="title"
+              className="input-item"
+              required
+              />
+            </div>
+            <IonItem className="group-select">
+              <IonLabel>Select Group</IonLabel>
+              <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)} required>
+              {
+                groups.map(g =>
+                  <IonSelectOption key={g.id} value={g.id}>{g.name}</IonSelectOption>
+                )
+              }
+              </IonSelect>
+            </IonItem>
+            <div className="input-section">
+              <h1 className="input-title">Workout Date</h1>
+              <IonInput
+              value={date}
+              onIonChange={e => setDate(e.target.value)}
+              type="date"
+              className="input-item"
+              required
+              />
+            </div>
+            <IonButton type="submit" className="submit-button">Create Workout</IonButton>
+          </form>
+          <h1 className="edit-workout">Edit Workout</h1>
+          {
+            workouts ?
+            workouts.map(w =>
+              <IonButton key={w.id} onClick={() => {
+                setLastTitle(w.title);
+                setWorkoutId(w.id);
+              }}>
+                {w.title}
+              </IonButton>
+            ) :
+            <p>Loading...</p>
+          }
+        </>
       }
     </div>
   );

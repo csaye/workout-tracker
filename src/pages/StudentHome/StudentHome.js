@@ -6,22 +6,10 @@ import Workout from '../../components/Workout/Workout';
 import firebase from 'firebase/app';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+import { currentDate } from '../../util/currentDate';
+
 function StudentHome() {
   const [groupId, setGroupId] = useState('');
-
-  function formatDate(d) {
-    let year = d.getFullYear().toString();
-    let month = (d.getMonth() + 1).toString();
-    let day = d.getDate().toString();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-');
-  }
-
-  // get current date
-  const currentDate = formatDate(new Date());
 
   // get groups from firebase
   const groupsQuery = firebase.firestore().collection('groups').orderBy('name');
