@@ -13,14 +13,14 @@ function AdminExercise(props) {
   }
 
   return (
-    <div className="AdminExercise">
+    <div className="AdminExercise soft-shadow">
       <h2>{name}</h2>
       <div className="workout-info">
         <p>Sets: {sets}</p>
         <p>Reps: {reps}</p>
       </div>
-      <p><i>{comments}</i></p>
-      <IonButton color="danger" onClick={deleteExercise}>Delete</IonButton>
+      <p className="comments"><i>{comments}</i></p>
+      <IonButton className="hover-scale" color="danger" onClick={deleteExercise}>Delete</IonButton>
     </div>
   );
 }

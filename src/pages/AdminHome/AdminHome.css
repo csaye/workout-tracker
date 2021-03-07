@@ -35,6 +35,10 @@
   margin-top: 40px;
 }
 
+.AdminHome .right-margin {
+  margin-right: 5px;
+}
+
 .AdminHome .edit-workout {
   margin: 0 0 10px 0;
 }

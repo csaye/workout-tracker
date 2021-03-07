@@ -77,7 +77,7 @@ function Page() {
     // if no user doc, create user doc
     if (!userData.data()) {
       const currentUser = firebase.auth().currentUser;
-      await firebase.firestore().collection('users').add({
+      await firebase.firestore().collection('users').doc(currentUser.uid).set({
         email: currentUser.email,
         name: currentUser.displayName,
         uid: currentUser.uid,

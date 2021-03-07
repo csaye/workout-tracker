@@ -2,7 +2,7 @@
   background: #bbb;
   border-radius: 10px;
   width: 80%;
-  margin: 20px auto;
+  margin: 15px auto;
   padding: 10px;
 }
 
@@ -12,4 +12,8 @@
 
 .AdminExercise .workout-info {
   margin: 10px 0;
+}
+
+.AdminExercise .comments {
+  margin-bottom: 5px;
 }

@@ -74,7 +74,6 @@ function AdminHome() {
 
   // deletes current workout
   async function deleteWorkout() {
-    console.log(workout);
     const wId = workout.id;
     setWorkout('');
     await firebase.firestore().collection('workouts').doc(wId).delete();
@@ -93,7 +92,7 @@ function AdminHome() {
       {
         workout ?
         <>
-          <h1>Editing "{workout.title}"</h1>
+          <h1 className="edit-workout">Editing "{workout.title}"</h1>
           <form onSubmit={createExercise} className="input-section">
             <h4 className="input-title">Exercise Name</h4>
             <IonInput
@@ -130,7 +129,7 @@ function AdminHome() {
             className="input-item"
             placeholder="comments"
             />
-            <IonButton type="submit">Create Exercise</IonButton>
+            <IonButton className="create-workout hover-scale" type="submit">Create Exercise</IonButton>
           </form>
           {
             exercises ?
@@ -148,7 +147,7 @@ function AdminHome() {
             </> :
             <p>Loading students...</p>
           }
-          <IonButton className="hover-scale" color="danger" onClick={deleteWorkout}>Delete Workout</IonButton>
+          <IonButton className="hover-scale right-margin" color="danger" onClick={deleteWorkout}>Delete Workout</IonButton>
           <IonButton className="hover-scale" onClick={() => setWorkout('')}>Finish</IonButton>
         </> :
         <>

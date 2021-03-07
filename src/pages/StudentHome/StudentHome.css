@@ -1,3 +1,7 @@
 .StudentHome .no-bottom {
   margin-bottom: 0;
 }
+
+.StudentHome .welcome-text {
+  margin: 0 0 20px 0;
+}
