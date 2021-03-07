@@ -1,10 +1,14 @@
+// general imports
 import { IonButton } from '@ionic/react';
-
-import './SignIn.css';
 import logo from '../../img/logo.png';
 
+// firebase
 import firebase from 'firebase/app';
 
+// style
+import './SignIn.css';
+
+// SignIn component
 function SignIn() {
   // opens google sign in popup
   function signInWithGoogle() {

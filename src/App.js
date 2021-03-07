@@ -1,34 +1,14 @@
+// general imports
 import React, { useState, useEffect } from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonContent, IonPage, IonSpinner } from '@ionic/react';
-// import { IonReactRouter } from '@ionic/react-router';
+import { IonApp, IonContent, IonPage } from '@ionic/react';
 
+// pages
 import SignIn from './pages/SignIn/SignIn';
 import StudentHome from './pages/StudentHome/StudentHome';
 import AdminHome from './pages/AdminHome/AdminHome';
 
+// components
 import Header from './components/Header/Header';
-
-import './App.css';
-
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
-/* Theme variables */
-import './theme/variables.css';
 
 // firebase
 import firebase from 'firebase/app';
@@ -37,9 +17,32 @@ import 'firebase/firestore';
 import { firebaseConfig } from './util/firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
+// style
+import './App.css';
+
+// core CSS required for Ionic components to work properly
+import '@ionic/react/css/core.css';
+
+// basic CSS for apps built with Ionic
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/typography.css';
+
+// optional CSS utils that can be commented out
+import '@ionic/react/css/padding.css';
+import '@ionic/react/css/float-elements.css';
+import '@ionic/react/css/text-alignment.css';
+import '@ionic/react/css/text-transformation.css';
+import '@ionic/react/css/flex-utils.css';
+import '@ionic/react/css/display.css';
+
+// theme variables
+import './theme/variables.css';
+
 // initialize firebase
 firebase.initializeApp(firebaseConfig);
 
+// App component
 function App() {
   // use firebase auth
   useAuthState(firebase.auth());
@@ -49,12 +52,6 @@ function App() {
       <IonPage>
         <Header />
         <IonContent fullscreen className="ion-content">
-          {/*<IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large">Workout Tracker</IonTitle>
-            </IonToolbar>
-          </IonHeader>*/}
-          {/*<Router />*/}
           <Page />
         </IonContent>
       </IonPage>
@@ -62,15 +59,18 @@ function App() {
   );
 }
 
+// Page component
 function Page() {
   const [status, setStatus] = useState('');
 
+  // sets user status based on firebase doc
   async function getStatus() {
+    // if user not signed in, clear status and return
     if (!firebase.auth().currentUser) {
       setStatus('');
       return;
     }
-    // get user status
+    // get user status from firebase
     const uid = firebase.auth().currentUser.uid;
     const userData = await firebase.firestore().collection('users').doc(uid).get();
     setStatus(userData.data()?.isAdmin ? 'admin' : 'student');
@@ -86,7 +86,7 @@ function Page() {
     }
   }
 
-  // get status when auth state changed
+  // get user status when auth state changed
   useEffect(() => {
     firebase.auth().onAuthStateChanged(() => {
       getStatus();
@@ -107,31 +107,20 @@ function Page() {
       {
         firebase.auth().currentUser ?
         <>
+          {/* if logged in, show corresponding homepage */}
           {
             status === 'admin' ?
             <AdminHome /> :
             <StudentHome />
           }
         </> :
-        <SignIn />
+        <>
+          {/* if not logged in, show sign in page */}
+          <SignIn />
+        </>
       }
     </div>
   );
 }
-
-// function Router() {
-//   return (
-//     <IonReactRouter>
-//       <IonRouterOutlet>
-//         <Route exact path="/signin">
-//           <SignIn />
-//         </Route>
-//         <Route exact path="/">
-//           <StudentHome />
-//         </Route>
-//       </IonRouterOutlet>
-//     </IonReactRouter>
-//   );
-// }
 
 export default App;

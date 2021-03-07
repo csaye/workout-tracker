@@ -1,14 +1,19 @@
+// general imports
 import React, { useState } from 'react';
 import { IonButton, IonInput, IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/react';
+import { currentDate } from '../../util/currentDate';
 
-import './AdminHome.css';
+// components
+import AdminExercise from '../../components/AdminExercise/AdminExercise';
+
+// firebase
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase/app';
 
-import AdminExercise from '../../components/AdminExercise/AdminExercise';
+// style
+import './AdminHome.css';
 
-import { currentDate } from '../../util/currentDate';
-
+// AdminHome component
 function AdminHome() {
   const [title, setTitle] = useState('');
   const [groupId, setGroupId] = useState('');
