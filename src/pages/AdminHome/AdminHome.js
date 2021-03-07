@@ -3,8 +3,9 @@ import { IonButton, IonInput, IonItem, IonLabel, IonSelect, IonSelectOption } fr
 
 import './AdminHome.css';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-
 import firebase from 'firebase/app';
+
+import AdminExercise from '../../components/AdminExercise/AdminExercise';
 
 import { currentDate } from '../../util/currentDate';
 
@@ -29,6 +30,12 @@ function AdminHome() {
   const workoutsQuery = firebase.firestore().collection('workouts')
   .where('date', '==', currentDate ? currentDate : 'null');
   const [workouts] = useCollectionData(workoutsQuery, {idField: 'id'});
+
+  // get exercises from firebase
+  const exercisesQuery = firebase.firestore().collection('exercises')
+  .where('workoutId', '==', workoutId ? workoutId : 'null')
+  .orderBy('createdAt');
+  const [exercises] = useCollectionData(exercisesQuery, {idField: 'id'});
 
   async function createWorkout(e) {
     e.preventDefault();
@@ -60,6 +67,13 @@ function AdminHome() {
     setSets(0);
     setReps(0);
     setComments('');
+  }
+
+  // deletes current workout
+  async function deleteWorkout() {
+    const wId = workoutId;
+    setWorkoutId('');
+    await firebase.firestore().collection('workouts').doc(wId).delete();
   }
 
   if (!groups) {
@@ -114,7 +128,13 @@ function AdminHome() {
             />
             <IonButton type="submit">Create Exercise</IonButton>
           </form>
-          <IonButton className="submit-button" onClick={() => setWorkoutId('')}>Finish</IonButton>
+          {
+            exercises ?
+            exercises.map(e => <AdminExercise key={e.id} data={e} />) :
+            <p>Loading...</p>
+          }
+          <IonButton color="danger" onClick={deleteWorkout}>Delete Workout</IonButton>
+          <IonButton onClick={() => setWorkoutId('')}>Finish</IonButton>
         </> :
         <>
           <form onSubmit={createWorkout}>
@@ -150,11 +170,11 @@ function AdminHome() {
             </div>
             <IonButton type="submit" className="submit-button">Create Workout</IonButton>
           </form>
-          <h1 className="edit-workout">Edit Workout</h1>
+          { workouts?.length > 0 && <h1 className="edit-workout">Edit Workout</h1> }
           {
             workouts ?
             workouts.map(w =>
-              <IonButton key={w.id} onClick={() => {
+              <IonButton color="secondary" key={w.id} onClick={() => {
                 setLastTitle(w.title);
                 setWorkoutId(w.id);
               }}>
