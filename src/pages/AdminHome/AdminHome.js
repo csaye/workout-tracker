@@ -11,11 +11,10 @@ import { currentDate } from '../../util/currentDate';
 
 function AdminHome() {
   const [title, setTitle] = useState('');
-  const [lastTitle, setLastTitle] = useState('');
   const [groupId, setGroupId] = useState('');
   const [date, setDate] = useState('');
 
-  const [workoutId, setWorkoutId] = useState('');
+  const [workout, setWorkout] = useState('');
 
   const [name, setName] = useState('');
   const [sets, setSets] = useState(0);
@@ -33,20 +32,21 @@ function AdminHome() {
 
   // get exercises from firebase
   const exercisesQuery = firebase.firestore().collection('exercises')
-  .where('workoutId', '==', workoutId ? workoutId : 'null')
+  .where('workoutId', '==', workout ? workout.id : 'null')
   .orderBy('createdAt');
   const [exercises] = useCollectionData(exercisesQuery, {idField: 'id'});
 
   async function createWorkout(e) {
     e.preventDefault();
-    setLastTitle(title);
     await firebase.firestore().collection('workouts').add({
       title,
       groupId,
       date,
-      dateCreated: new Date()
-    }).then(docRef => {
-      setWorkoutId(docRef.id);
+      dateCreated: new Date(),
+      studentsComplete: []
+    }).then(async docRef => {
+      const doc = await docRef.get();
+      setWorkout(doc);
     });
     setTitle('');
     setGroupId('');
@@ -60,7 +60,7 @@ function AdminHome() {
       sets,
       reps,
       comments,
-      workoutId,
+      workoutId: workout.id,
       createdAt: new Date()
     });
     setName('');
@@ -71,8 +71,8 @@ function AdminHome() {
 
   // deletes current workout
   async function deleteWorkout() {
-    const wId = workoutId;
-    setWorkoutId('');
+    const wId = workout.id;
+    setWorkout('');
     await firebase.firestore().collection('workouts').doc(wId).delete();
   }
 
@@ -87,9 +87,9 @@ function AdminHome() {
   return (
     <div className="AdminHome center-box">
       {
-        workoutId ?
+        workout ?
         <>
-          <h1>Editing "{lastTitle}"</h1>
+          <h1>Editing "{workout.title}"</h1>
           <form onSubmit={createExercise} className="input-section">
             <h4 className="input-title">Exercise Name</h4>
             <IonInput
@@ -131,10 +131,21 @@ function AdminHome() {
           {
             exercises ?
             exercises.map(e => <AdminExercise key={e.id} data={e} />) :
-            <p>Loading...</p>
+            <p>Loading exercises...</p>
+          }
+          {
+            workout ?
+            <>
+              {
+                workout.studentsComplete?.length > 0 ?
+                <p>Students complete: {workout.studentsComplete.join(', ')}</p> :
+                <p>No students have completed the workout yet</p>
+              }
+            </> :
+            <p>Loading students...</p>
           }
           <IonButton color="danger" onClick={deleteWorkout}>Delete Workout</IonButton>
-          <IonButton onClick={() => setWorkoutId('')}>Finish</IonButton>
+          <IonButton onClick={() => setWorkout('')}>Finish</IonButton>
         </> :
         <>
           <h1 className="create-workout">Create a Workout</h1>
@@ -175,14 +186,11 @@ function AdminHome() {
           {
             workouts ?
             workouts.map(w =>
-              <IonButton color="secondary" key={w.id} onClick={() => {
-                setLastTitle(w.title);
-                setWorkoutId(w.id);
-              }}>
+              <IonButton color="secondary" key={w.id} onClick={() => setWorkout(w)}>
                 {w.title}
               </IonButton>
             ) :
-            <p>Loading...</p>
+            <p>Loading workouts...</p>
           }
         </>
       }
