@@ -8,6 +8,8 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import { currentDate } from '../../util/currentDate';
 
+import './StudentHome.css';
+
 function StudentHome() {
   const [groupId, setGroupId] = useState('');
 
@@ -53,10 +55,10 @@ function StudentHome() {
                   workouts.map(w => <Workout key={w.id} data={w} />)
                 }
               </> :
-              <p>No workouts for today</p>
+              <p className="no-bottom">No workouts for today</p>
             }
           </> :
-          <p className="margin-sm">Loading workouts...</p>
+          <p className="no-bottom">Loading workouts...</p>
         }
       </div>
       }

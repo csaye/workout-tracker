@@ -1,0 +1,10 @@
+.SignIn img {
+  width: 200px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.SignIn h1 {
+  margin: 10px 0;
+}

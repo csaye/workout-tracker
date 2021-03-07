@@ -137,9 +137,10 @@ function AdminHome() {
           <IonButton onClick={() => setWorkoutId('')}>Finish</IonButton>
         </> :
         <>
+          <h1 className="create-workout">Create a Workout</h1>
           <form onSubmit={createWorkout}>
             <div className="input-section">
-              <h1 className="input-title">Workout Title</h1>
+              <h4 className="input-title">Workout Title</h4>
               <IonInput
               value={title}
               onIonChange={e => setTitle(e.target.value)}
@@ -159,7 +160,7 @@ function AdminHome() {
               </IonSelect>
             </IonItem>
             <div className="input-section">
-              <h1 className="input-title">Workout Date</h1>
+              <h4 className="input-title">Workout Date</h4>
               <IonInput
               value={date}
               onIonChange={e => setDate(e.target.value)}
@@ -168,7 +169,7 @@ function AdminHome() {
               required
               />
             </div>
-            <IonButton type="submit" className="submit-button">Create Workout</IonButton>
+            <IonButton type="submit">Create Workout</IonButton>
           </form>
           { workouts?.length > 0 && <h1 className="edit-workout">Edit Workout</h1> }
           {
