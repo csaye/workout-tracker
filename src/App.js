@@ -74,6 +74,16 @@ function Page() {
     const uid = firebase.auth().currentUser.uid;
     const userData = await firebase.firestore().collection('users').doc(uid).get();
     setStatus(userData.data()?.isAdmin ? 'admin' : 'student');
+    // if no user doc, create user doc
+    if (!userData.data()) {
+      const currentUser = firebase.auth().currentUser;
+      await firebase.firestore().collection('users').add({
+        email: currentUser.email,
+        name: currentUser.displayName,
+        uid: currentUser.uid,
+        isAdmin: false
+      });
+    }
   }
 
   // get status when auth state changed
