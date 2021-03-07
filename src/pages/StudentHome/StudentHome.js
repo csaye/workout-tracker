@@ -41,6 +41,7 @@ function StudentHome() {
       <h1 className="welcome-text">
       Welcome to Workout Tracker!<br />Please select a group.
       </h1>
+      {/* group input */}
       <IonItem>
         <IonLabel>Select Group</IonLabel>
         <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)}>

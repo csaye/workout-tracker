@@ -1,10 +1,14 @@
+// general imports
 import { IonHeader, IonTitle, IonToolbar, IonButton } from '@ionic/react';
-
 import logo from '../../img/logo.png';
-import './Header.css';
 
+// firebase
 import firebase from 'firebase/app';
 
+// style
+import './Header.css';
+
+// Header component
 function Header() {
   // signs out current user
   function signOut() {
@@ -18,6 +22,7 @@ function Header() {
           <img className="logo-img" src={logo} />
           <IonTitle className="ion-title">Workout Tracker</IonTitle>
           {
+            // if user signed in, show header auth items
             firebase.auth().currentUser &&
             <div className="flex-row">
               <p className="signed-in-as">Signed in as {firebase.auth().currentUser.displayName}</p>

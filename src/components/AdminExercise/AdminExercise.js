@@ -1,10 +1,15 @@
-import './AdminExercise.css';
-
+// general imports
 import { IonButton } from '@ionic/react';
 
+// firebase
 import firebase from 'firebase/app';
 
+// style
+import './AdminExercise.css';
+
+// AdminExercise component
 function AdminExercise(props) {
+  // get exercise data from props
   const { name, sets, reps, comments, id } = props.data;
 
   // deletes current exercise
@@ -25,4 +30,4 @@ function AdminExercise(props) {
   );
 }
 
-export default AdminExercise
+export default AdminExercise;

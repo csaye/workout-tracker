@@ -41,28 +41,35 @@ function AdminHome() {
   .orderBy('createdAt');
   const [exercises] = useCollectionData(exercisesQuery, {idField: 'id'});
 
+  // creates a workout with current parameters
   async function createWorkout(e) {
     e.preventDefault();
+    // if no group chosen, return
     if (!groupId) return;
+    // add workout to firebase
     await firebase.firestore().collection('workouts').add({
       title,
       groupId,
       date,
       dateCreated: new Date(),
       studentsComplete: []
+    // set current workout to this workout
     }).then(async docRef => {
       const id = docRef.id;
       const doc = await docRef.get();
       const docData = doc.data();
       setWorkout({id, ...docData});
     });
+    // clear input fields
     setTitle('');
     setGroupId('');
     setDate(currentDate);
   }
 
+  // creates an exercise with current parameters
   async function createExercise(e) {
     e.preventDefault();
+    // add exercise to firebase
     await firebase.firestore().collection('exercises').add({
       name,
       sets,
@@ -71,6 +78,7 @@ function AdminHome() {
       workoutId: workout.id,
       createdAt: new Date()
     });
+    // clear input fields
     setName('');
     setSets(0);
     setReps(0);
@@ -84,6 +92,7 @@ function AdminHome() {
     await firebase.firestore().collection('workouts').doc(wId).delete();
   }
 
+  // if no groups, return loading page
   if (!groups) {
     return (
       <div className="AdminHome">
@@ -95,10 +104,13 @@ function AdminHome() {
   return (
     <div className="AdminHome center-box">
       {
+        // if current workout set, return editing page
         workout ?
         <>
           <h1 className="edit-workout">Editing "{workout.title}"</h1>
+          {/* create exercise form */}
           <form onSubmit={createExercise} className="input-section">
+            {/* name input */}
             <h4 className="input-title">Exercise Name</h4>
             <IonInput
             value={name}
@@ -107,6 +119,7 @@ function AdminHome() {
             placeholder="exercise name"
             required
             />
+            {/* sets input */}
             <h4 className="input-title">Sets</h4>
             <IonInput
             value={sets}
@@ -117,6 +130,7 @@ function AdminHome() {
             className="input-item"
             required
             />
+            {/* reps input */}
             <h4 className="input-title">Reps</h4>
             <IonInput
             value={reps}
@@ -127,6 +141,7 @@ function AdminHome() {
             className="input-item"
             required
             />
+            {/* comments input */}
             <h4 className="input-title">Comments</h4>
             <IonInput
             value={comments}
@@ -137,11 +152,14 @@ function AdminHome() {
             <IonButton className="create-workout hover-scale" type="submit">Create Exercise</IonButton>
           </form>
           {
+            // map exercises to AdminExercise components
             exercises ?
             exercises.map(e => <AdminExercise key={e.id} data={e} />) :
+            // show loading if no exercises yet
             <p>Loading exercises...</p>
           }
           {
+            // if workout
             workout ?
             <>
               {
@@ -155,20 +173,25 @@ function AdminHome() {
           <IonButton className="hover-scale right-margin" color="danger" onClick={deleteWorkout}>Delete Workout</IonButton>
           <IonButton className="hover-scale" onClick={() => setWorkout('')}>Finish</IonButton>
         </> :
+        // if current workout not set, return create workout page
         <>
           <div className="input-section">
             <h1 className="create-workout">Create a Workout</h1>
+            {/* create workout form */}
             <form onSubmit={createWorkout}>
+              {/* group input */}
               <IonItem className="group-select">
                 <IonLabel>Select Group</IonLabel>
                 <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)} required>
                 {
+                  // map groups to select options
                   groups.map(g =>
                     <IonSelectOption key={g.id} value={g.id}>{g.name}</IonSelectOption>
                   )
                 }
                 </IonSelect>
               </IonItem>
+              {/* title input */}
               <h4 className="input-title">Workout Title</h4>
               <IonInput
               value={title}
@@ -177,6 +200,7 @@ function AdminHome() {
               className="input-item"
               required
               />
+              {/* date input */}
               <h4 className="input-title">Workout Date</h4>
               <IonInput
               value={date}
@@ -189,10 +213,12 @@ function AdminHome() {
             </form>
           </div>
           {
+            // if workouts exist
             workouts?.length > 0 &&
             <div className="input-section top-margin">
               <h1 className="edit-workout">Edit Workout</h1>
               {
+                // map workouts to edit workout buttons
                 workouts.map(w =>
                   <IonButton className="hover-scale edit-button" color="secondary" key={w.id} onClick={() => setWorkout(w)}>
                     {w.title}

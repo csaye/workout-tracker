@@ -1,6 +1,9 @@
+// style
 import './Exercise.css';
 
+// Exercise component
 function Exercise(props) {
+  // get exercise data from props
   const { name, sets, reps, comments } = props.data;
 
   return (
@@ -15,4 +18,4 @@ function Exercise(props) {
   );
 }
 
-export default Exercise
+export default Exercise;
