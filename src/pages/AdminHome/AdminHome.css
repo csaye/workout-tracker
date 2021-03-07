@@ -16,20 +16,29 @@
 }
 
 .AdminHome .input-section {
+  box-shadow: 0 2px 5px #999;
   background: #bbb;
   border-radius: 10px;
   padding: 10px;
   margin: 10px 0;
 }
 
-.AdminHome .input-title {
-  margin: 0 0 10px 0;
-}
-
-.AdminHome .group-select {
+.AdminHome .create-workout {
   margin: 20px 0;
 }
 
+.AdminHome .group-select {
+  margin: 20px;
+}
+
+.AdminHome .top-margin {
+  margin-top: 40px;
+}
+
 .AdminHome .edit-workout {
-  margin: 20px 0 0 0;
+  margin: 0 0 10px 0;
+}
+
+.AdminHome .edit-button {
+  margin: 3px;
 }

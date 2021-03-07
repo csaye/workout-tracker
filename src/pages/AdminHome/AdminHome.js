@@ -12,7 +12,7 @@ import { currentDate } from '../../util/currentDate';
 function AdminHome() {
   const [title, setTitle] = useState('');
   const [groupId, setGroupId] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(currentDate);
 
   const [workout, setWorkout] = useState('');
 
@@ -38,6 +38,7 @@ function AdminHome() {
 
   async function createWorkout(e) {
     e.preventDefault();
+    if (!groupId) return;
     await firebase.firestore().collection('workouts').add({
       title,
       groupId,
@@ -45,12 +46,14 @@ function AdminHome() {
       dateCreated: new Date(),
       studentsComplete: []
     }).then(async docRef => {
+      const id = docRef.id;
       const doc = await docRef.get();
-      setWorkout(doc);
+      const docData = doc.data();
+      setWorkout({id, ...docData});
     });
     setTitle('');
     setGroupId('');
-    setDate('');
+    setDate(currentDate);
   }
 
   async function createExercise(e) {
@@ -71,6 +74,7 @@ function AdminHome() {
 
   // deletes current workout
   async function deleteWorkout() {
+    console.log(workout);
     const wId = workout.id;
     setWorkout('');
     await firebase.firestore().collection('workouts').doc(wId).delete();
@@ -144,13 +148,23 @@ function AdminHome() {
             </> :
             <p>Loading students...</p>
           }
-          <IonButton color="danger" onClick={deleteWorkout}>Delete Workout</IonButton>
-          <IonButton onClick={() => setWorkout('')}>Finish</IonButton>
+          <IonButton className="hover-scale" color="danger" onClick={deleteWorkout}>Delete Workout</IonButton>
+          <IonButton className="hover-scale" onClick={() => setWorkout('')}>Finish</IonButton>
         </> :
         <>
-          <h1 className="create-workout">Create a Workout</h1>
-          <form onSubmit={createWorkout}>
-            <div className="input-section">
+          <div className="input-section">
+            <h1 className="create-workout">Create a Workout</h1>
+            <form onSubmit={createWorkout}>
+              <IonItem className="group-select">
+                <IonLabel>Select Group</IonLabel>
+                <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)} required>
+                {
+                  groups.map(g =>
+                    <IonSelectOption key={g.id} value={g.id}>{g.name}</IonSelectOption>
+                  )
+                }
+                </IonSelect>
+              </IonItem>
               <h4 className="input-title">Workout Title</h4>
               <IonInput
               value={title}
@@ -159,18 +173,6 @@ function AdminHome() {
               className="input-item"
               required
               />
-            </div>
-            <IonItem className="group-select">
-              <IonLabel>Select Group</IonLabel>
-              <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)} required>
-              {
-                groups.map(g =>
-                  <IonSelectOption key={g.id} value={g.id}>{g.name}</IonSelectOption>
-                )
-              }
-              </IonSelect>
-            </IonItem>
-            <div className="input-section">
               <h4 className="input-title">Workout Date</h4>
               <IonInput
               value={date}
@@ -179,18 +181,21 @@ function AdminHome() {
               className="input-item"
               required
               />
-            </div>
-            <IonButton type="submit">Create Workout</IonButton>
-          </form>
-          { workouts?.length > 0 && <h1 className="edit-workout">Edit Workout</h1> }
+              <IonButton className="hover-scale create-workout" type="submit">Create Workout</IonButton>
+            </form>
+          </div>
           {
-            workouts ?
-            workouts.map(w =>
-              <IonButton color="secondary" key={w.id} onClick={() => setWorkout(w)}>
-                {w.title}
-              </IonButton>
-            ) :
-            <p>Loading workouts...</p>
+            workouts?.length > 0 &&
+            <div className="input-section top-margin">
+              <h1 className="edit-workout">Edit Workout</h1>
+              {
+                workouts.map(w =>
+                  <IonButton className="hover-scale edit-button" color="secondary" key={w.id} onClick={() => setWorkout(w)}>
+                    {w.title}
+                  </IonButton>
+                )
+              }
+            </div>
           }
         </>
       }
