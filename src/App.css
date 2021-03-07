@@ -1,5 +1,21 @@
+.hover-scale {
+  transition: 0.2s;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
 .margin-sm {
   margin: 10px;
+}
+
+.hard-shadow {
+  box-shadow: 0 1px 3px #333;
+}
+
+.soft-shadow {
+  box-shadow: 0 2px 5px #999;
 }
 
 .center-box {
@@ -8,7 +24,8 @@
   max-width: 600px;
   text-align: center;
   background-color: #efefef;
-  border-radius: 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px #999;
   padding: 40px;
   margin: 120px auto;
 }

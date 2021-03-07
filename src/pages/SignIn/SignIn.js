@@ -14,9 +14,14 @@ function SignIn() {
 
   return (
     <div className="SignIn center-box">
-      <div><img src={logo} /></div>
+      <img className="hard-shadow" src={logo} />
       <h1>Workout Tracker</h1>
-      <IonButton onClick={signInWithGoogle}>Sign in with Google</IonButton>
+      <IonButton
+      className="ion-button hover-scale"
+      onClick={signInWithGoogle}
+      >
+      Sign in with Google
+      </IonButton>
     </div>
   )
 }
