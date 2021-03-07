@@ -1,0 +1,15 @@
+.AdminExercise {
+  background: #bbb;
+  border-radius: 10px;
+  width: 80%;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+.AdminExercise p, .AdminExercise h2 {
+  margin: 0;
+}
+
+.AdminExercise .workout-info {
+  margin: 10px 0;
+}
