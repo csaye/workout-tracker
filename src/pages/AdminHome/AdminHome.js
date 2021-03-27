@@ -15,8 +15,9 @@ import './AdminHome.css';
 
 // AdminHome component
 function AdminHome() {
-  const [title, setTitle] = useState('');
   const [groupId, setGroupId] = useState('');
+
+  const [title, setTitle] = useState('');
   const [date, setDate] = useState(currentDate);
 
   const [workout, setWorkout] = useState('');
@@ -30,9 +31,17 @@ function AdminHome() {
   const groupsQuery = firebase.firestore().collection('groups').orderBy('name');
   const [groups] = useCollectionData(groupsQuery);
 
-  // get workouts from firebase
+  // get today's workouts from firebase
+  const todayWorkoutsQuery = firebase.firestore().collection('workouts')
+  .where('date', '==', currentDate ? currentDate : 'null')
+  .where('groupId', '==', groupId ? groupId : 'null')
+  .orderBy('title');
+  const [todayWorkouts] = useCollectionData(todayWorkoutsQuery, {idField: 'id'});
+
+  // get other workouts from firebase
   const workoutsQuery = firebase.firestore().collection('workouts')
-  .where('date', '==', currentDate ? currentDate : 'null');
+  .where('groupId', '==', groupId ? groupId : 'null')
+  .orderBy('title');
   const [workouts] = useCollectionData(workoutsQuery, {idField: 'id'});
 
   // get exercises from firebase
@@ -62,7 +71,6 @@ function AdminHome() {
     });
     // clear input fields
     setTitle('');
-    setGroupId('');
     setDate(currentDate);
   }
 
@@ -104,6 +112,25 @@ function AdminHome() {
   return (
     <div className="AdminHome center-box">
       {
+        !workout &&
+        <div>
+          <h1 className="welcome-text">
+          Welcome to Workout Tracker!<br />Please select a group.
+          </h1>
+          {/* group input */}
+          <IonItem>
+            <IonLabel>Select Group</IonLabel>
+            <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)}>
+            {
+              // map all groups to select options
+              groups.map(g =>
+                <IonSelectOption key={g.id} value={g.id}>{g.name}</IonSelectOption>
+              )
+            }
+            </IonSelect>
+          </IonItem>
+        </div>
+      }
       {
         groupId &&
         <div>
