@@ -1,5 +1,5 @@
 // general imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonButton } from '@ionic/react';
 import firebase from 'firebase/app';
 
@@ -9,6 +9,7 @@ import './Exercise.css';
 // Exercise component
 function Exercise(props) {
   const [studentComments, setStudentComments] = useState('');
+  const [successText, setSuccessText] = useState('');
 
   // get exercise data from props
   const { id, name, sets, reps, comments } = props.data;
@@ -24,7 +25,21 @@ function Exercise(props) {
       name: studentName,
       comments: studentComments
     });
+    setSuccessText('Comment successfully saved');
+    setTimeout(() => {
+      setSuccessText('');
+    }, 3000);
   }
+
+  useEffect(() => {
+    // get comments from firebase
+    const snapshot = firebase.firestore().collection('exercises').doc(id).collection('comments').doc(studentUid).get()
+    .then(doc => {
+      if (doc.exists) {
+        setStudentComments(doc.data().comments);
+      }
+    })
+  }, []);
 
   return (
     <div className="Exercise soft-shadow">
@@ -32,11 +47,12 @@ function Exercise(props) {
       <div className="workout-info">
         <p>Sets: {sets}</p>
         <p>Reps: {reps}</p>
+        <p className="comments"><i>{comments}</i></p>
       </div>
-      <p><i>{comments}</i></p>
       <form onSubmit={saveComments}>
         <input placeholder="How did it feel?" value={studentComments} onChange={e => setStudentComments(e.target.value)} required />
         <IonButton type="submit">Save Comment</IonButton>
+        {successText && <p className="success">{successText}</p>}
       </form>
     </div>
   );

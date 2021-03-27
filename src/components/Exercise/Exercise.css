@@ -10,6 +10,10 @@
   margin: 0;
 }
 
+.Exercise .comments {
+  margin: 5px 0 0 0;
+}
+
 .Exercise .workout-info {
   margin: 10px 0;
 }
