@@ -91,11 +91,14 @@ function AdminHome() {
   // creates an exercise with current parameters
   async function createExercise(e) {
     e.preventDefault();
+    const intSets = parseInt(sets);
+    const intReps = parseInt(reps);
+    if (isNaN(intSets) || isNaN(intReps)) return;
     // add exercise to firebase
     await firebase.firestore().collection('exercises').add({
       name,
-      sets,
-      reps,
+      sets: intSets,
+      reps: intReps,
       comments,
       workoutId: workout.id,
       createdAt: new Date()
