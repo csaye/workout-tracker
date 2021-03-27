@@ -13,3 +13,8 @@
 .Exercise .workout-info {
   margin: 10px 0;
 }
+
+.Exercise form {
+  display: flex;
+  flex-direction: column;
+}
