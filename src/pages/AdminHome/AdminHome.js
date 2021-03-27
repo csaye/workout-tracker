@@ -21,6 +21,8 @@ function AdminHome() {
   const [date, setDate] = useState(currentDate);
 
   const [workout, setWorkout] = useState('');
+  const [workoutTitle, setWorkoutTitle] = useState('');
+  const [successText, setSuccessText] = useState('');
 
   const [name, setName] = useState('');
   const [sets, setSets] = useState(0);
@@ -67,11 +69,23 @@ function AdminHome() {
       const id = docRef.id;
       const doc = await docRef.get();
       const docData = doc.data();
-      setWorkout({id, ...docData});
+      startEdit({id, ...docData});
     });
-    // clear input fields
-    setTitle('');
-    setDate(currentDate);
+  }
+
+  // updates current workout with current parameters
+  async function updateWorkout(e) {
+    e.preventDefault();
+    // update workout in firebase
+    await firebase.firestore().collection('workouts').doc(workout.id).update({
+      title,
+      date
+    })
+    setWorkoutTitle(title);
+    setSuccessText('Workout successfully updated');
+    setTimeout(() => {
+      setSuccessText('');
+    }, 3000);
   }
 
   // creates an exercise with current parameters
@@ -96,8 +110,23 @@ function AdminHome() {
   // deletes current workout
   async function deleteWorkout() {
     const wId = workout.id;
-    setWorkout('');
+    endEdit();
     await firebase.firestore().collection('workouts').doc(wId).delete();
+  }
+
+  // starts editing given workout
+  function startEdit(w) {
+    setTitle(w.title);
+    setWorkoutTitle(w.title);
+    setDate(w.date);
+    setWorkout(w);
+  }
+
+  // ends editing current workout
+  function endEdit() {
+    setWorkout(undefined);
+    setTitle('');
+    setDate(currentDate);
   }
 
   // if no groups, return loading page
@@ -138,9 +167,33 @@ function AdminHome() {
             // if current workout set, return editing page
             workout ?
             <>
-              <h1 className="edit-workout">Editing "{workout.title}"</h1>
+              <h1 className="edit-workout">Editing "{workoutTitle}"</h1>
+              {/* edit workout form */}
+              <form onSubmit={updateWorkout} className="input-section">
+                {/* title input */}
+                <h4 className="input-title">Workout Title</h4>
+                <IonInput
+                value={title}
+                onIonChange={e => setTitle(e.target.value)}
+                placeholder="title"
+                className="input-item"
+                required
+                />
+                {/* date input */}
+                <h4 className="input-title">Workout Date</h4>
+                <IonInput
+                value={date}
+                onIonChange={e => setDate(e.target.value)}
+                type="date"
+                className="input-item"
+                required
+                />
+                <IonButton type="submit" className="create-workout hover-scale">Update Workout</IonButton>
+                {successText && <p className="success">{successText}</p>}
+              </form>
               {/* create exercise form */}
               <form onSubmit={createExercise} className="input-section">
+                <h1>Create Exercise</h1>
                 {/* name input */}
                 <h4 className="input-title">Exercise Name</h4>
                 <IonInput
@@ -202,7 +255,7 @@ function AdminHome() {
                 <p>Loading students...</p>
               }
               <IonButton className="hover-scale right-margin" color="danger" onClick={deleteWorkout}>Delete Workout</IonButton>
-              <IonButton className="hover-scale" onClick={() => setWorkout('')}>Finish</IonButton>
+              <IonButton className="hover-scale" onClick={endEdit}>Finish</IonButton>
             </> :
             // if current workout not set, return create workout page
             <>
@@ -239,7 +292,7 @@ function AdminHome() {
                   {
                     // map workouts to edit workout buttons
                     todayWorkouts.map(w =>
-                      <IonButton className="hover-scale edit-button" color="secondary" key={w.id} onClick={() => setWorkout(w)}>
+                      <IonButton className="hover-scale edit-button" color="secondary" key={w.id} onClick={() => startEdit(w)}>
                         {w.title}
                       </IonButton>
                     )
@@ -254,7 +307,7 @@ function AdminHome() {
                   {
                     // map workouts to edit workout buttons
                     workouts.map(w =>
-                      <IonButton className="hover-scale edit-button" color="secondary" key={w.id} onClick={() => setWorkout(w)}>
+                      <IonButton className="hover-scale edit-button" color="secondary" key={w.id} onClick={() => startEdit(w)}>
                         {w.title}
                       </IonButton>
                     )
