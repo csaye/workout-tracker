@@ -43,7 +43,7 @@ function Exercise(props) {
 
   return (
     <div className="Exercise soft-shadow">
-      <h2>{name}</h2>
+      <h2><u>{name}</u></h2>
       <div className="workout-info">
         <p>Sets: {sets}</p>
         <p>Reps: {reps}</p>

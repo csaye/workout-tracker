@@ -23,13 +23,14 @@ function AdminExercise(props) {
 
   return (
     <div className="AdminExercise soft-shadow">
-      <h2>{name}</h2>
+      <h2><u>{name}</u></h2>
       <div className="workout-info">
         <p>Sets: {sets}</p>
         <p>Reps: {reps}</p>
+        <p className="comments"><i>{comments}</i></p>
       </div>
-      <p className="comments"><i>{comments}</i></p>
       <div className="student-comments">
+        <h3>Student Comments</h3>
         {
           studentComments &&
           studentComments.map(c => <div key={c.id}>{c.name} | <i>{c.comments}</i></div>)
