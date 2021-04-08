@@ -51,8 +51,10 @@ function App() {
     <IonApp>
       <IonPage>
         <Header />
-        <IonContent fullscreen className="ion-content">
-          <Page />
+        <IonContent fullscreen>
+          <div className="background-img">
+            <Page />
+          </div>
         </IonContent>
       </IonPage>
     </IonApp>
