@@ -19,6 +19,7 @@
 .env.production.local
 .vscode
 .idea
+.firebase
 
 # logs
 npm-debug.log*
