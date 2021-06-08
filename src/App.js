@@ -62,6 +62,7 @@ function App() {
 
 // Page component
 function Page() {
+  const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState('');
 
   // sets user status based on firebase doc
@@ -90,12 +91,13 @@ function Page() {
   // get user status when auth state changed
   useEffect(() => {
     firebase.auth().onAuthStateChanged(() => {
+      setLoaded(true);
       getStatus();
     });
-  });
+  }, []);
 
   // return if loading user status
-  if (firebase.auth().currentUser && !status) {
+  if (!loaded || (firebase.auth().currentUser && !status)) {
     return (
       <div className="Page">
         <p className="margin-sm loading-text">Loading...</p>

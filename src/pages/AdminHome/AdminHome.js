@@ -112,6 +112,7 @@ function AdminHome() {
 
   // deletes current workout
   async function deleteWorkout() {
+    if (!window.confirm(`Delete workout "${workout.title}"?`)) return;
     const wId = workout.id;
     endEdit();
     await firebase.firestore().collection('workouts').doc(wId).delete();
@@ -290,7 +291,7 @@ function AdminHome() {
               {
                 // if workouts exist
                 todayWorkouts?.length > 0 &&
-                <div className="input-section top-margin">
+                <div className="input-section">
                   <h1 className="edit-workout">Today's Workouts</h1>
                   {
                     // map workouts to edit workout buttons
@@ -305,7 +306,7 @@ function AdminHome() {
               {
                 // if workouts exist
                 workouts?.length > 0 &&
-                <div className="input-section top-margin">
+                <div className="input-section">
                   <h1 className="edit-workout">All Workouts</h1>
                   {
                     // map workouts to edit workout buttons

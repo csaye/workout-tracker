@@ -18,6 +18,7 @@ function AdminExercise(props) {
 
   // deletes current exercise
   async function deleteExercise() {
+    if (!window.confirm(`Delete exercise "${name}"?`)) return;
     await firebase.firestore().collection('exercises').doc(id).delete();
   }
 

@@ -31,16 +31,16 @@
   margin: 10px 0;
 }
 
+.AdminHome .success {
+  margin: 0 0 10px 0;
+}
+
 .AdminHome .create-workout {
   margin: 20px 0;
 }
 
 .AdminHome .group-select {
   margin: 20px;
-}
-
-.AdminHome .top-margin {
-  margin-top: 40px;
 }
 
 .AdminHome .right-margin {
