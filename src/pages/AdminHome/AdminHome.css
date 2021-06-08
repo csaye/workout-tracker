@@ -1,3 +1,7 @@
+.AdminHome {
+  color: #ddd;
+}
+
 .AdminHome .create-workout {
   margin: 0;
 }
@@ -7,8 +11,12 @@
   border-radius: 10px;
 }
 
+.AdminHome .welcome-text {
+  margin: 0 0 10px 0;
+}
+
 .AdminHome .input-item {
-  background: #efefef;
+  background: #36393f;
   border-radius: 10px;
   width: 50%;
   min-width: 150px;
@@ -16,8 +24,8 @@
 }
 
 .AdminHome .input-section {
-  box-shadow: 0 2px 5px #999;
-  background: #bbb;
+  box-shadow: 0 0 5px #36393f;
+  background: #282a2e;
   border-radius: 10px;
   padding: 10px;
   margin: 10px 0;

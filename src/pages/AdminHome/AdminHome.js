@@ -136,7 +136,7 @@ function AdminHome() {
   if (!groups) {
     return (
       <div className="AdminHome">
-        <p className="margin-sm">Loading...</p>
+        <p className="margin-sm loading-text">Loading...</p>
       </div>
     )
   }
@@ -152,7 +152,7 @@ function AdminHome() {
           {/* group input */}
           <IonItem>
             <IonLabel>Select Group</IonLabel>
-            <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)}>
+            <IonSelect value={groupId} onIonChange={e => setGroupId(e.target.value)} className="ion-select">
             {
               // map all groups to select options
               groups.map(g =>

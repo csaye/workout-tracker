@@ -26,7 +26,7 @@ function Header() {
             firebase.auth().currentUser &&
             <div className="flex-row">
               <p className="signed-in-as">Signed in as {firebase.auth().currentUser.displayName}</p>
-              <img className="user-img hard-shadow" src={firebase.auth().currentUser.photoURL} />
+              <img className="user-img" src={firebase.auth().currentUser.photoURL} />
               <IonButton
               className="ion-button hover-scale"
               onClick={signOut}

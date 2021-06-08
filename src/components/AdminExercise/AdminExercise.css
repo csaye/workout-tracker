@@ -1,5 +1,5 @@
 .AdminExercise {
-  background: #bbb;
+  background: #282a2e;
   border-radius: 10px;
   width: 80%;
   margin: 15px auto;
@@ -11,6 +11,7 @@
 }
 
 .AdminExercise h3 {
+  font-size: 18px;
   margin: 0 0 5px 0;
 }
 

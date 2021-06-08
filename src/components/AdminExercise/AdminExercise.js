@@ -22,18 +22,18 @@ function AdminExercise(props) {
   }
 
   return (
-    <div className="AdminExercise soft-shadow">
-      <h2><u>{name}</u></h2>
+    <div className="AdminExercise">
+      <h2><b><u>{name}</u></b></h2>
       <div className="workout-info">
         <p>Sets: {sets}</p>
         <p>Reps: {reps}</p>
         <p className="comments"><i>{comments}</i></p>
       </div>
       <div className="student-comments">
-        <h3>Student Comments</h3>
+        <h3><u>Student Comments</u></h3>
         {
           studentComments &&
-          studentComments.map(c => <div key={c.id}>{c.name} | <i>{c.comments}</i></div>)
+          studentComments.map(c => <div key={c.id}>{c.name} • <i>{c.comments}</i></div>)
         }
       </div>
       <IonButton className="hover-scale" color="danger" onClick={deleteExercise}>Delete</IonButton>

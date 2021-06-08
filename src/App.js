@@ -98,7 +98,7 @@ function Page() {
   if (firebase.auth().currentUser && !status) {
     return (
       <div className="Page">
-        <p className="margin-sm">Loading...</p>
+        <p className="margin-sm loading-text">Loading...</p>
       </div>
     );
   }
