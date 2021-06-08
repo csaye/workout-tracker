@@ -31,7 +31,7 @@ function StudentHome() {
   if (!groups) {
     return (
       <div className="StudentHome">
-        <p className="margin-sm">Loading...</p>
+        <p className="margin-sm loading-text">Loading...</p>
       </div>
     )
   }

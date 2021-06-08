@@ -1,5 +1,5 @@
 .Exercise {
-  background: #efefef;
+  background: #36393f;
   border-radius: 10px;
   width: 80%;
   margin: 15px auto;
@@ -21,4 +21,12 @@
 .Exercise form {
   display: flex;
   flex-direction: column;
+}
+
+.Exercise form input {
+  background: #282a2e;
+  border: 0;
+  padding: 2px 3px;
+  margin: 0 2px;
+  border-radius: 2px;
 }

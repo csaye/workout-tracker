@@ -1,7 +1,11 @@
+.StudentHome {
+  color: #ddd;
+}
+
 .StudentHome .no-bottom {
   margin-bottom: 0;
 }
 
 .StudentHome .welcome-text {
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
 }

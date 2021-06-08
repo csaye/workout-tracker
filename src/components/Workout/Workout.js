@@ -54,7 +54,7 @@ function Workout(props) {
 
   return (
     <div className="Workout">
-      <h1>{title}</h1>
+      <h1><u>{title}</u></h1>
       {
         // map exercises to exercise components
         exercises.map(e => <Exercise key={e.id} data={e} />)

@@ -19,8 +19,10 @@ function SignIn() {
 
   return (
     <div className="SignIn center-box">
-      <img className="wick hard-shadow" src={wick} />
-      <h1>Workout Tracker <img className="logo" src={logo} /></h1>
+      <img className="logo" src={logo} />
+      <img className="wick" src={wick} />
+      <img className="logo" src={logo} style={{transform: 'scaleX(-1)'}} />
+      <h1>Workout Tracker</h1>
       <IonButton
       className="ion-button hover-scale"
       onClick={signInWithGoogle}
