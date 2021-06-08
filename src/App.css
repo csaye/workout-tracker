@@ -31,10 +31,10 @@
   min-width: 300px;
   max-width: 600px;
   text-align: center;
-  background-color: #efefef;
-  border-radius: 20px;
-  box-shadow: 0 2px 5px #999;
-  padding: 40px;
+  background-color: #36393f;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #202225;
+  padding: 20px;
   margin: 120px auto;
 }
 

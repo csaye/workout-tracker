@@ -1,12 +1,22 @@
-.SignIn img {
-  width: 200px;
+.SignIn {
+  color: #ddd;
+}
+
+.SignIn img.wick {
+  height: 120px;
   background: #fff;
-  padding: 20px;
+  margin-top: 10px;
+  padding: 10px;
   border-radius: 10px;
 }
 
 .SignIn h1 {
-  margin: 10px 0;
+  margin: 5px 0 10px 0;
+  font-weight: bold;
+}
+
+.SignIn img.logo {
+  height: 32px;
 }
 
 .SignIn .ion-button {

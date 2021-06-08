@@ -1,6 +1,7 @@
 // general imports
 import { IonButton } from '@ionic/react';
 import logo from '../../img/logo.png';
+import wick from '../../img/wick.png';
 
 // firebase
 import firebase from 'firebase/app';
@@ -18,8 +19,8 @@ function SignIn() {
 
   return (
     <div className="SignIn center-box">
-      <img className="hard-shadow" src={logo} />
-      <h1>Workout Tracker</h1>
+      <img className="wick hard-shadow" src={wick} />
+      <h1>Workout Tracker <img className="logo" src={logo} /></h1>
       <IonButton
       className="ion-button hover-scale"
       onClick={signInWithGoogle}
